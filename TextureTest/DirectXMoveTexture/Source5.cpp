@@ -21,9 +21,9 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 		return 0;
 	}
 
-	//timeBeginPeriod(1);//今の時間をtimeに保存。
-	//DWORD time = timeGetTime();
-	//DWORD prevtime = 0;
+	timeBeginPeriod(1);//今の時間をtimeに保存。
+	DWORD time = timeGetTime();
+	DWORD prevtime = 0;
 	MSG msg;
 
 	ZeroMemory(&msg, sizeof(msg));
@@ -45,29 +45,92 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInstance, LPSTR lpCmpLine, IN
 		{
 
 
-			//if (time - prevtime < 1000 / 60) {
+			if (time - prevtime < 1000 / 60) {
 
 			device.UpdateKeyStatus(&directX);
 			//DrawStart(&directX);
 
-
-
 			render.Render(directX);
+
+			/*
+			if (device.GetKeyStatus(DIK_UP))
+			{
+				render.m_PosY += 0.01;
+				render.SetfPosY(render.m_PosY);
+			}
+			else if (device.GetKeyStatus(DIK_DOWN))
+			{
+				render.m_PosY -= 0.01;
+				render.SetfPosY(render.m_PosY);
+			}
+			else if (device.GetKeyStatus(DIK_RIGHT))
+			{
+				render.m_PosX += 0.01f;
+				render.SetfPosX(render.m_PosX);
+			}
+			else if (device.GetKeyStatus(DIK_LEFT))
+			{
+				render.m_PosX -= 0.01f;
+				render.SetfPosX(render.m_PosX);
+			}
+			else if (device.GetKeyStatus(DIK_Z))
+			{
+				render.m_PosZ -= 0.01f;
+				render.SetfPosZ(render.m_PosZ);
+			}
+			else if (device.GetKeyStatus(DIK_X))
+			{
+				render.m_PosZ += 0.01f;
+				render.SetfPosZ(render.m_PosZ);
+			}
+			*/
+
+			if (device.GetKeyStatus(DIK_UP))
+			{
+				render.m_fPitch += 0.01;
+				render.SetfPitch(render.m_fPitch);
+			}
+			else if (device.GetKeyStatus(DIK_DOWN))
+			{
+				render.m_fPitch -= 0.01;
+				render.SetfPitch(render.m_fPitch);
+			}
+			else if (device.GetKeyStatus(DIK_RIGHT))
+			{
+				render.m_fHeading += 0.01f;
+				render.SetfHeading(render.m_fHeading);
+			}
+			else if (device.GetKeyStatus(DIK_LEFT))
+			{
+				render.m_fHeading -= 0.01f;
+				render.SetfHeading(render.m_fHeading);
+			}
+			else if (device.GetKeyStatus(DIK_Z))
+			{
+				render.m_fBank -= 0.01f;
+				render.SetfBank(render.m_fBank);
+			}
+			else if (device.GetKeyStatus(DIK_X))
+			{
+				render.m_fBank += 0.01f;
+				render.SetfBank(render.m_fBank);
+			}
+					
 
 			//DrawEnd(directX);
 
-			//time = timeGetTime();
-		//}
+			time = timeGetTime();
+		}
 
 
 
 
-		//prevtime = time;
+		prevtime = time;
 		}
 
 	}
 
-	//timeEndPeriod(1);
+	timeEndPeriod(1);
 
 	// エンジン終了
 	EndEngine(directX);

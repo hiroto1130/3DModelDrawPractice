@@ -7,27 +7,48 @@
 
 class Render_
 {
-public:
-	D3DXMATRIXA16 matWorld, matRotation, matPosition;
+private:
+	D3DXMATRIXA16 matWorld, matRotation, matPosition, matRotation2;
 	D3DXMATRIXA16 matView, matProj;
 	D3DLIGHT9 light;
 
-	float fPosX;
-	float fPosY;
-	float fPosZ;
+	float fPosX = 0;
+	float fPosY = 0;
+	float fPosZ = 0;
+
+	float fHeading = 0;
+	float fPitch   = 0;
+	float fBank    = 0;
 
 public:
-	void Render(DirectX directX, float fPosX, float fPosY, float fPosZ);
+	void Render(DirectX directX);
 
 	VOID FreeDx(DirectX directX);
 
-	 int GetfPosX();
-	 int GetfPosY();
-	 int GetfPosZ();
+	float m_PosX = 0;
+	float m_PosY = 0;
+	float m_PosZ = 0;
 
-	 void SetfPosX(float fposX);
-	 void SetfPosY(float fposY);
-	 void SetfPosZ(float fposZ);
+	float m_fHeading = 0;
+	float m_fPitch   = 0;
+	float m_fBank    = 0;
+	
+
+	int GetfPosX();
+	int GetfPosY();
+	int GetfPosZ();
+
+	void SetfPosX(float posX);
+	void SetfPosY(float posY);
+	void SetfPosZ(float posZ);
+
+	int GetfHeading();
+	int GetfPitch();
+	int GetfBank();
+
+	void SetfHeading(float Heading);
+	void SetfPitch(float Pitch);
+	void SetfBank(float Bank);
 
 };
 

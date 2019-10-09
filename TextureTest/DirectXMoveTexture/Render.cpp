@@ -1,7 +1,7 @@
 ﻿#include"Render.h"
 
 
-void  Render_::Render(DirectX directX,float fPosX,float fPosY,float fPosZ)
+void  Render_::Render(DirectX directX)
 {
 	// -------------------- ワールドトランスフォーム（絶対座標変換）-------------------- //
 	// 自動回転
@@ -31,11 +31,84 @@ void  Render_::Render(DirectX directX,float fPosX,float fPosY,float fPosZ)
 	// -------------------- ワールドトランスフォーム（絶対座標変換）-------------------- //
 	// 操作
 
-	D3DXMatrixIdentity(&matWorld);
-	D3DXMatrixTranslation(&matPosition, fPosX, fPosY, fPosZ);
-	D3DXMatrixMultiply(&matWorld, &matWorld, &matPosition);
-	directX.pDevice->SetTransform(D3DTS_WORLD, &matWorld);
+	/*
+	D3DXMatrixIdentity(
+		&matWorld  // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+	);
 
+	D3DXMatrixTranslation(
+		&matPosition, // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+		fPosX,        // X座標の値
+		fPosY,        // Y座標の値
+		fPosZ         // Z座標の値
+	);
+
+	D3DXMatrixMultiply(
+		&matWorld,   // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+		&matWorld,   // D3DXMATRIX構造体へのポインタ
+		&matPosition // D3DXMATRIX構造体へのポインタ(座標)
+	);
+
+	directX.pDevice->SetTransform(
+		D3DTS_WORLD, // デバイス状態変数(D3DTs\WORLD は 0〜255の範囲のインデックス値に変換)
+		&matWorld    // 変更するD3DXMATRIX構造体のポインタ
+	);
+	*/
+
+	// -------------------- ワールドトランスフォーム（絶対座標変換）-------------------- //
+	// 軸回転
+
+	D3DXMatrixIdentity(
+		&matWorld       // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+	);
+
+	D3DXMatrixIdentity(
+		&matRotation    // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+	);
+
+	D3DXMatrixRotationX(
+		&matRotation2,  // 操作結果を入れるD3DXMATRIX構造体へのポインタ(X座標用)
+		fPitch			// 回転角度(ラジアン)
+	);
+
+	D3DXMatrixMultiply(
+		&matRotation,  // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+		&matRotation,  // D3DXMATRIX構造体へのポインタ
+		&matRotation2  // D3DXMATRIX構造体へのポインタ(座標)
+	);
+
+	D3DXMatrixRotationY(
+		&matRotation2,  // 操作結果を入れるD3DXMATRIX構造体へのポインタ(Y座標用)
+		fHeading		// 回転角度(ラジアン)
+	);
+
+	D3DXMatrixMultiply(
+		&matRotation,  // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+		&matRotation,  // D3DXMATRIX構造体へのポインタ
+		&matRotation2  // D3DXMATRIX構造体へのポインタ(座標)
+	);
+
+	D3DXMatrixRotationZ(
+		&matRotation2,  // 操作結果を入れるD3DXMATRIX構造体へのポインタ(Z座標用)
+		fBank			// 回転角度(ラジアン)
+	);
+
+	D3DXMatrixMultiply(
+		&matRotation, // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+		&matRotation, // D3DXMATRIX構造体へのポインタ
+		&matRotation2 // D3DXMATRIX構造体へのポインタ(座標)
+		);
+
+	D3DXMatrixMultiply(
+		&matWorld,    // 操作結果を入れるD3DXMATRIX構造体へのポインタ
+		&matWorld,	  // D3DXMATRIX構造体へのポインタ
+		&matRotation  // D3DXMATRIX構造体へのポインタ(座標)
+	);
+
+	directX.pDevice->SetTransform(
+		D3DTS_WORLD,  // デバイス状態変数(D3DTs\WORLD は 0〜255の範囲のインデックス値に変換)
+		&matWorld	  // 変更するD3DXMATRIX構造体のポインタ
+	);
 
 	// -------------------- ビュートランスフォーム（視点座標変換）--------------------- // 
 
@@ -163,11 +236,73 @@ VOID Render_::FreeDx(DirectX directX)
 	SAFE_RELEASE(directX.pMesh);
 	SAFE_RELEASE(directX.pDevice);
 	SAFE_RELEASE(directX.pDirect3d);
-}]
+}
 
-int GetfPosX();
-int GetfPosY();
-int GetfPosZ();
+int Render_::GetfPosX()
+{
+	return fPosX;
+};
+
+int Render_::GetfPosY()
+{
+	return fPosY;
+};
+
+int Render_::GetfPosZ()
+{
+	return fPosZ;
+
+};
+
+void Render_::SetfPosX(float PosX)
+{
+	fPosX = PosX;
+};
+
+void Render_::SetfPosY(float PosY)
+{
+	fPosY = PosY;
+};
+
+void Render_::SetfPosZ(float PosZ)
+{
+	fPosZ = PosZ;
+};
+
+int Render_::GetfHeading() 
+{
+	return m_fHeading;
+};
+
+int Render_::GetfPitch()
+{
+	return m_fPitch;
+};
+
+int Render_::GetfBank()
+{
+	return m_fBank;
+};
+
+void Render_::SetfHeading(float Heading)
+{
+	fHeading = Heading;
+};
+void Render_::SetfPitch(float Pitch)
+{
+	fPitch = Pitch;
+};
+
+void Render_::SetfBank(float Bank)
+{
+	fBank = Bank;
+};
+
+
+
+
+
+
 
 
 
